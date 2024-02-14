@@ -15,18 +15,13 @@ database = MongoDBHandler("SoundHealthDB")
 async def upload_voice_data(file: UploadFile = Form(...) ,user_key: str = Form(...) ,doctor_id:str =Form(...), patient_id:str =Form(...)):
     try:
         if not database.user_exists(user_key):
-            return JSONResponse(content={"error": "not valid userkey!"})
-
-        # Read the audio data from the uploaded file
+            return JSONResponse(content={"error": "not valid user key!"})
         wav_data = await file.read()
-        # Transcribe the WAV audio data using VoiceParser
         transcription = voice_parser.transcribe_wav_data(wav_data)
-        logger.info(f"transcription:\n {transcription}")
         chat_analysis = chat_gpt.communicate_with_chatgpt(transcription)
         chat_analysis = newline_pattern.sub(' ', chat_analysis)
         medical_record = MedicalRecord(user_key,doctor_id,patient_id,transcription,chat_analysis)
         database.insert_user_data(medical_record)
-        logger.info(f"Server answer {chat_analysis}")
         return JSONResponse(content={"Treatment recommendations: ": chat_analysis})
 
     except HTTPException as http_exception:
@@ -37,8 +32,30 @@ async def upload_voice_data(file: UploadFile = Form(...) ,user_key: str = Form(.
 #Yoav, you need to implment a route that recive user_id and return all patient converstions meaning audio_transcription and chat analysis.
 # If the user was not exists you will return Error, user id was not found.     
 @app.get("/Get_patient_converstions")
-async def upload_voice_data(patient_id:str =Form(...)):
-    pass
+async def upload_voice_data(user_key: str = Form(...) ,patient_id:str =Form(...)):
+    try:
+        if not database.user_exists(user_key):
+            return JSONResponse(content={"error": "not valid userkey!"})
+        user_converstions = database.get_conversations_by_id(patient_id, "patient_id")
+        return JSONResponse(content={"User converstions: ": user_converstions})
+
+    except HTTPException as http_exception:
+        return JSONResponse(content={"error": f"HTTPException: {str(http_exception)}"}, status_code=http_exception.status_code)
+    except Exception as general_exception:
+        return JSONResponse(content={"error": f"Unexpected error: {str(general_exception)}"}, status_code=500)
+
+@app.get("/Get_doctor_conversations")
+async def upload_voice_data(user_key: str = Form(...) ,doctor_id:str =Form(...)):
+    try:
+        if not database.user_exists(user_key):
+            return JSONResponse(content={"error": "not valid userkey!"})
+        user_converstions = database.get_conversations_by_id(doctor_id, "doctor_id")
+        return JSONResponse(content={"User converstions: ": user_converstions})
+
+    except HTTPException as http_exception:
+        return JSONResponse(content={"error": f"HTTPException: {str(http_exception)}"}, status_code=http_exception.status_code)
+    except Exception as general_exception:
+        return JSONResponse(content={"error": f"Unexpected error: {str(general_exception)}"}, status_code=500)
 
 
 # Configure logging

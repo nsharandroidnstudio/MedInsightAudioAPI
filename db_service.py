@@ -55,6 +55,14 @@ class MongoDBHandler:
             print(f"Error checking if user exists: {e}")
             return False
         
+    def get_conversations_by_id(self, id, element, collection_name="patient_conversation"):
+        try:
+            collection = self.db[collection_name]
+            return list(collection.find({element: id}, {"_id": 0}))
+        except Exception as e:
+            print(f"Error getting patient conversations: {e}")
+            return []
+    
 
 # Example usage outside the class
 

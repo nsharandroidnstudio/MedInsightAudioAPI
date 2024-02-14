@@ -16,11 +16,11 @@ class ChatGPTService:
                 model="gpt-3.5-turbo",
                 messages=[{
                     "role": "user",
-                    "content":f"Analyse the text.Output in one line just the false facts and their corrections.again in one line output only false facts and their corrections:"f" {input_transcription}"""
+                    "content":f"I am a doctor. Here is conversation between me and my patient: \n{input_transcription}\nWhat alternative tests are recommended to the patient to do? list shortly only 3 tests. Don't write anything else, just the 3 tests. Please also explain in one sentence each of the 3 tests"
                 },
 
                 
-                ],temperature=0.55
+                ]
             )
             return response['choices'][0]['message']['content'].replace(r'\\n', '\n')
         except Exception as e:
