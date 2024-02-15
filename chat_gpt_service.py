@@ -1,17 +1,15 @@
 from openai import OpenAI
-import os
-
-os.environ['OPENAI_API_KEY'] = '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'
-client = OpenAI(
-        # This is the default and can omitted
-        api_key = os.environ.get("OPENAI_API_KEY"),
-        organization = 'org-2CwskBzgGP5OnJE5rJP2GrIS',    
-    )
-
-class ChatGPTService:   
+from dotenv import load_dotenv
+load_dotenv("config.env")
 
 
-    def communicate_with_chatgpt(self, input_transcription):
+class ChatGPTService:  
+
+    def communicate_with_chatgpt(self, api_key, organization, input_transcription):
+            client = OpenAI(
+                api_key=api_key,
+                organization=organization,
+            )
         
             input_transcription = str(input_transcription)
             chat_completion = client.chat.completions.create(
@@ -30,5 +28,5 @@ class ChatGPTService:
                     result += chunk.choices[0].delta.content  
             return result
 
-    
+
     

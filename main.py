@@ -41,7 +41,7 @@ async def upload_voice_data(file: UploadFile = Form(...) ,user_key: str = Form(.
 
         transcription = voice_parser.transcribe_wav_data(audio_path)           
                                  
-        chat_analysis = chat_gpt.communicate_with_chatgpt(transcription)
+        chat_analysis = chat_gpt.communicate_with_chatgpt(os.environ.get("OPENAI_API_KEY"), os.environ.get("ORGANIZATION_KEY"), transcription)
         chat_analysis = newline_pattern.sub(' ', chat_analysis)
         generated_id = uuid.uuid4()
         conversation_id = str(generated_id)
