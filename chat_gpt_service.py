@@ -1,28 +1,34 @@
-import openai
+from openai import OpenAI
 import os
 
-class ChatGPTService:
-    def __init__(self, api_key=None):
-        if api_key:
-            openai.api_key = api_key
-        else:
-            openai.api_key = "sk-" + os.getenv("OPENAI_API_KEY")
+os.environ['OPENAI_API_KEY'] = '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'
+client = OpenAI(
+        # This is the default and can omitted
+        api_key = os.environ.get("OPENAI_API_KEY"),
+        organization = 'org-2CwskBzgGP5OnJE5rJP2GrIS',    
+    )
+
+class ChatGPTService:   
 
 
-    def communicate_with_chatgpt(self,input_transcription):
-        try:
+    def communicate_with_chatgpt(self, input_transcription):
+        
             input_transcription = str(input_transcription)
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[{
+            chat_completion = client.chat.completions.create(
+            messages=[
+                {
                     "role": "user",
-                    "content":f"I am a doctor. Here is conversation between me and my patient: \n{input_transcription}\nWhat alternative tests are recommended to the patient to do? list shortly only 3 tests. Don't write anything else, just the 3 tests. Please also explain in one sentence each of the 3 tests"
-                },
+                    "content": f"I am a doctor. Here is conversation between me and my patient: \n{input_transcription}\nWhat alternative tests are recommended to the patient to do? list shortly only 3 tests. Don't write anything else, just the 3 tests. Please also explain in one sentence each of the 3 tests"
+                }
+            ],
+            model="gpt-3.5-turbo", 
+            stream=True,       
+        )
+            result = ""
+            for chunk in chat_completion:
+                if chunk.choices[0].delta.content is not None:
+                    result += chunk.choices[0].delta.content  
+            return result
 
-                
-                ]
-            )
-            return response['choices'][0]['message']['content'].replace(r'\\n', '\n')
-        except Exception as e:
-            print(f"Error running generated code! Error: {e}")
-            return None
+    
+    
