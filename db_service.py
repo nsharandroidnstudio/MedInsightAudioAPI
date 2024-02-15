@@ -77,11 +77,11 @@ class MongoDBHandler:
             return False
         
         
-    def get_conversations_by_element(self, key, doctor_id, desired_value, element, collection_name="patient_conversation"):        
+    def get_conversations_by_element(self, desired_value, element, collection_name="patient_conversation"):        
         try:
             collection = self.db[collection_name]
             #collection = self.get_filtered_data(key, id)
-            return list(collection.find({"$and": [{"user_key": key}, {"doctor_id": doctor_id}, {element: desired_value}]}, {"_id": 0}))
+            return list(collection.find({element: desired_value}, {"_id": 0}))
         except Exception as e:
             print(f"Error getting conversations: {e}")
             return []

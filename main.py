@@ -66,7 +66,7 @@ async def get_patient_conversations(user_key: str = Form(...), doctor_id:str =Fo
     try:
         if not database.user_exists(user_key, doctor_id):
             return JSONResponse(content={"error": "the user is not exist"})        
-        conversations = database.get_conversations_by_element(user_key, doctor_id, patient_id, "patient_id")
+        conversations = database.get_conversations_by_element(patient_id, "patient_id")
         return JSONResponse(content={"conversations: ": conversations})
 
     except HTTPException as http_exception:
@@ -92,7 +92,7 @@ async def get_topic_conversations(user_key: str = Form(...), doctor_id:str =Form
     try:
         if not database.user_exists(user_key, doctor_id):
             return JSONResponse(content={"error": "the user is not exist"})
-        conversations = database.get_conversations_by_element(user_key, doctor_id, topic, "topic")
+        conversations = database.get_conversations_by_element(topic, "topic")
         return JSONResponse(content={"conversations: ": conversations})
 
     except HTTPException as http_exception:
@@ -105,7 +105,7 @@ async def get_id_conversations(user_key: str = Form(...), doctor_id:str =Form(..
     try:
         if not database.user_exists(user_key, doctor_id):
             return JSONResponse(content={"error": "the user is not exist"})
-        conversations = database.get_conversations_by_element(user_key, doctor_id, conversation_id, "conversation_id")
+        conversations = database.get_conversations_by_element(conversation_id, "conversation_id")
         return JSONResponse(content={"conversations: ": conversations})
 
     except HTTPException as http_exception:
