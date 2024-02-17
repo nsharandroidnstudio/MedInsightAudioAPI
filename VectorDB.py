@@ -8,10 +8,27 @@ class VectorDB:
         self.embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name=model_name
         )
-        self.collection = self.client.get_collection(
-            name=collection_name,
-            embedding_function=self.embedding_func,
-        )
+        self.get_or_create_collection(collection_name)
+
+    def get_or_create_collection(self, collection_name):
+        """
+        Retrieves a collection if it exists, or creates it with the specified embedding function.
+
+        Args:
+            collection_name (str): The name of the collection to retrieve or create.
+
+        Returns:
+            chromadb.Collection: The retrieved or created collection object.
+        """
+
+        try:
+            # Attempt to get the collection
+            self.collection = self.client.get_collection(name=collection_name)
+        except Exception as e:
+            # If the collection doesn't exist, create it
+            self.collection = self.client.create_collection(
+                name=collection_name, embedding_function=self.embedding_func
+            )
 
     def insert_document(self, conversation_id, text):
         """
@@ -32,7 +49,7 @@ class VectorDB:
             metadatas=[{"hnsw:space": "cosine"}],
         )
 
-    def find_similar_conversions(self, text, n_results=100):
+    def find_similar_conversions(self, text, n_results=3):
         """
         Finds similar vectors in the ChromaDB collection using a query vector.
 
@@ -50,8 +67,9 @@ class VectorDB:
             n_results=n_results
         )
         result_subset = {
-            "ids": query_results.get("ids")[0][1:],
-            "distances": query_results.get("distances")[0][1:]
+            "Similar treatments": query_results.get("documents")[0][1:],
+            "Most similar conversions ids": query_results.get("ids")[0][1:],
+            "Conversions distances": query_results.get("distances")[0][1:]
         }
 
         return result_subset
@@ -73,6 +91,6 @@ class VectorDB:
             # Conversation_id not found in the collection or conversation_vector key not present
             return None
 
-    def clear_conversation(self, id):
-        ids_to_delete = [id]
+    def clear_conversation(self):
+        ids_to_delete = []
         self.collection.delete(ids=ids_to_delete)
