@@ -12,13 +12,13 @@ class MedicalRecord:
         return {
             "user_key": self._user_key,
             "doctor_id": self._doctor_id,
-            "patient_id": self._patient_id, 
+            "patient_id": self._patient_id,
             "topic": self._topic,
-            "conversation_id": self._conversation_id,           
+            "conversation_id": self._conversation_id,
             "transcription": self._transcription,
             "chat_analysis": self._chat_analysis
         }
-    
+
     def set_all_data(self, data_dict):
         if "user_key" in data_dict and data_dict["user_key"] is not None:
             self._user_key = data_dict["user_key"]
@@ -34,4 +34,3 @@ class MedicalRecord:
             self._transcription = data_dict["transcription"]
         if "chat_analysis" in data_dict and data_dict["chat_analysis"] is not None:
             self._chat_analysis = data_dict["chat_analysis"]
-    
