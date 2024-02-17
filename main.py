@@ -135,14 +135,20 @@ async def get_id_conversations(user_key: str = Form(...), doctor_id: str = Form(
 @app.get("/get_similar_conversations")
 async def get_similar_conversations(user_key: str = Form(...), doctor_id: str = Form(...),
                                     conversation_id: str = Form(...)):
-    # add a func that check's if conversion id exists
-    if not database.user_exists(user_key, doctor_id):
-        return JSONResponse(content={"error": "the user is not exist"})
-    text = (vector_db.get_text_by_conversation_id(conversation_id))
-    if text is None:
-        return JSONResponse(content={"error": "Conversion is  not exists"})
+    try:
+        if not database.user_exists(user_key, doctor_id):
+            return JSONResponse(content={"error": "the user is not exist"})
 
-    return JSONResponse(vector_db.find_similar_conversions(text))
+        text = vector_db.get_text_by_conversation_id(conversation_id)
+
+        if text is None:
+            return JSONResponse(content={"error": "Conversion is not exists"})
+
+        result = vector_db.find_similar_conversions(text)
+        return JSONResponse(result)
+
+    except Exception as e:
+        return JSONResponse(content={"error": f"An error occurred,please try later.."})
 
 
 
