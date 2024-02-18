@@ -6,14 +6,18 @@ from db_service import MongoDBHandler
 class Validator:    
     
     def check_id(self, id, doctor_or_patient):
+        if id is None:
+            return f"a {doctor_or_patient} id is missing"        
         if len(id) != 9:
-            return f"the length of {doctor_or_patient}_id should be 9"
+            return f"the length of {doctor_or_patient} id should be 9"
         if not id.isdigit():
-            return f"{doctor_or_patient}_id should consists digits only"
+            return f"{doctor_or_patient} id should consists digits only"
         return "valid"
     
         
     def check_user_key(self, user_key):
+        if user_key is None:
+            return "an user key is missing"
         error_msg = ""        
         if len(user_key) < 8:
             error_msg = "the password must contain at least 8 characters"    
@@ -45,7 +49,7 @@ class Validator:
             return "valid"
     
 
-    def check_insert_new_doctor(self, doctor_id, user_key):
+    def check_user_key_and_doctor_id(self, doctor_id, user_key):        
         error_msg = ""
 
         message1 = self.check_id(doctor_id, "doctor")
@@ -67,6 +71,8 @@ class Validator:
 
 
     def check_uploaded_file(self, file):
+        if file is None:
+            return "an audio file is missing"
         allowed_extensions = ['mp3', 'mp4', 'mpeg', 'mpga', 'm4a', 'wav', 'webm']
         file_extension = file.filename.split('.')[-1].lower()              
         if (file_extension not in allowed_extensions):
@@ -83,6 +89,8 @@ class Validator:
     
 
     def check_conversation_id(self, conversation_id):
+        if conversation_id is None:
+            return "a conversation id is missing"
         isValid = False
         try:
             uuid_obj = uuid.UUID(conversation_id)            
@@ -99,7 +107,9 @@ class Validator:
 
     
     def check_topic(self, topic):
-        allowed_topics = ['Asthma', 'COVID-19', 'Alzheimer', 'Headache', 'Back pain', 'Muscle pain', 'toothache']               
+        if topic is None:
+            return "a topic is missing"
+        allowed_topics = ['Asthma', 'COVID-19', 'Alzheimer', 'Headache', 'Back pain', 'Muscle pain', 'Toothache']               
         if (topic not in allowed_topics):
             return f"the topic is not supported. You should enter one of the following topics: {allowed_topics}"
         else:
@@ -107,14 +117,81 @@ class Validator:
         
     
 
-    def check_upload_voice_data(self, file, patient_id, topic):
+    def check_upload_voice_data(self, file, user_key, doctor_id, patient_id, topic):
         error_msg = ""
 
         message1 = self.check_uploaded_file(file)               
         if (message1 != "valid"):            
+            error_msg = message1 
+
+        message2 = self.check_user_key(user_key)
+        if (message2 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message2
+            else:
+                error_msg = error_msg + "," + message2 
+
+        message3 = self.check_id(doctor_id, "doctor")
+        if (message3 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message3
+            else:
+                error_msg = error_msg + "," + message3
+              
+        message4 = self.check_id(patient_id, "patient")
+        if (message4 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message4
+            else:
+                error_msg = error_msg + "," + message4
+        
+        message5 = self.check_topic(topic)
+        if (message5 != "valid"):
+            if (error_msg == ""):
+                error_msg = message5
+            else:
+                error_msg = error_msg + "," + message5
+              
+
+        if (error_msg != ""):                        
+            return error_msg
+        else:      
+            return "valid"
+    
+    def check_get_patient_conversations(self, user_key, doctor_id, patient_id):
+        error_msg = ""
+
+        message1 = self.check_user_key(user_key)            
+        if (message1 != "valid"):            
             error_msg = message1   
             
-        message2 = self.check_id(patient_id, "patient")
+        message2 = self.check_id(doctor_id, "doctor")
+        if (message2 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message2
+            else:
+                error_msg = error_msg + "," + message2
+        
+        message3 = self.check_id(patient_id, "patient")
+        if (message3 != "valid"):
+            if (error_msg == ""):
+                error_msg = message3
+            else:
+                error_msg = error_msg + "," + message3
+              
+        if (error_msg != ""):                        
+            return error_msg
+        else:      
+            return "valid"
+    
+    def check_get_topic_conversations(self, user_key, doctor_id, topic):
+        error_msg = ""
+
+        message1 = self.check_user_key(user_key)            
+        if (message1 != "valid"):            
+            error_msg = message1   
+            
+        message2 = self.check_id(doctor_id, "doctor")
         if (message2 != "valid"):            
             if (error_msg == ""):
                 error_msg = message2
@@ -128,11 +205,38 @@ class Validator:
             else:
                 error_msg = error_msg + "," + message3
               
-
         if (error_msg != ""):                        
             return error_msg
         else:      
             return "valid"
+    
+    def check_user_key_and_doctor_id_and_conversation_id(self, user_key, doctor_id, conversation_id):
+        error_msg = ""
+
+        message1 = self.check_user_key(user_key)            
+        if (message1 != "valid"):            
+            error_msg = message1   
+            
+        message2 = self.check_id(doctor_id, "doctor")
+        if (message2 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message2
+            else:
+                error_msg = error_msg + "," + message2
+        
+        message3 = self.check_conversation_id(conversation_id)
+        if (message3 != "valid"):
+            if (error_msg == ""):
+                error_msg = message3
+            else:
+                error_msg = error_msg + "," + message3
+              
+        if (error_msg != ""):                        
+            return error_msg
+        else:      
+            return "valid"
+    
+    
 
     
 
