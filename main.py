@@ -47,6 +47,7 @@ async def upload_voice_data(file: UploadFile = Form(...), user_key: str = Form(.
                 f.write(await file.read())
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error saving file: {e}")
+        print(os.environ.get("OPENAI_API_KEY"))
 
         transcription = voice_parser.transcribe_wav_data(audio_path)
         chat_analysis = chat_gpt.communicate_with_chatgpt(transcription)
@@ -56,7 +57,7 @@ async def upload_voice_data(file: UploadFile = Form(...), user_key: str = Form(.
         medical_record = MedicalRecord(user_key, doctor_id, patient_id, topic, conversation_id, transcription,
                                        chat_analysis)
         database.insert_user_data(medical_record)
-        vector_db.insert_document(conversation_id, topic + transcription)
+        vector_db.insert_document(conversation_id, topic + chat_analysis)
 
         try:
             os.remove(audio_path)
@@ -132,15 +133,15 @@ async def get_id_conversations(user_key: str = Form(...), doctor_id: str = Form(
         return JSONResponse(content={"error": f"Unexpected error: {str(general_exception)}"}, status_code=500)
 
 
-@app.get("/get_similar_conversations")
-async def get_similar_conversations(user_key: str = Form(...), doctor_id: str = Form(...),
+@app.get("/get_similar_treatments")
+async def get_similar_treatments(user_key: str = Form(...), doctor_id: str = Form(...),
                                     conversation_id: str = Form(...)):
     try:
         if not database.user_exists(user_key, doctor_id):
             return JSONResponse(content={"error": "the user is not exist"})
 
         text = vector_db.get_text_by_conversation_id(conversation_id)
-
+        print(text)
         if text is None:
             return JSONResponse(content={"error": "Conversion is not exists"})
 
