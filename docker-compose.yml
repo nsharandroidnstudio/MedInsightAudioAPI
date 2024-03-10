@@ -1,0 +1,33 @@
+version: '3'
+services:
+  # ChromaDB service
+  chromadb:
+    image: chromadb/chroma:latest  # Use the official ChromaDB image
+    container_name: chromadb
+    ports:
+      - "8001:8000"  # ChromaDB uses port 8000 by default
+    volumes:
+      - chroma_data:/chroma/.chroma  # Optional volume for persistent data
+
+  # MongoDB service
+  mongo:
+    image: mongo:latest  # Use the official MongoDB image
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # Default MongoDB port
+    volumes:
+      - mongo_data:/data/db  # Optional volume for persistent MongoDB data
+
+  # Your FastAPI service (assuming it connects to both databases)
+  fastapi:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"  # Adjust port if needed to avoid conflicts
+    depends_on:
+      - chromadb
+      - mongo  # FastAPI depends on both databases to start
+
+volumes:
+  chroma_data:  # Optional volume for ChromaDB
+  mongo_data:  # Optional volume for MongoDB

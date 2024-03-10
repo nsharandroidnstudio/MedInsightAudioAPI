@@ -7,11 +7,11 @@ from MedicalRecord import MedicalRecord
 class MongoDBHandler:
     def __init__(self, database_name):
         try:
-            self.client = MongoClient("mongodb://localhost:27017/")
+            self.client = MongoClient("mongodb://mongo:27017/")
             self.db = self.client[database_name]
         except Exception as e:
             print(f"Error connecting to MongoDB: {e}")
-
+    
     def print_entire_db_info(self, collection_name):
         try:
             collection = self.db[collection_name]
@@ -89,23 +89,5 @@ class MongoDBHandler:
             print(f"Error getting conversations: {e}")
             return []
 
-    # def delete_db(self, collection_name):
-    # collection = self.db[collection_name]
-    # result = collection.delete_many({})
-    # print(f"{result.deleted_count} documents deleted.")
+   
 
-
-# Example usage outside the class
-
-if __name__ == "__main__":
-    db_handler = MongoDBHandler("SoundHealthDB")
-
-    # db_handler.delete_db("doctor_users")
-    # db_handler.delete_db("patient_conversation")
-
-    # db_handler.insert_user_data(record)
-    db_handler.print_entire_db_info("patient_conversation")
-    db_handler.print_entire_db_info("doctor_users")
-    # print("filter:")
-    # print(db_handler.get_conversations_by_element("123","000", "COVID", "topic"))
-    # print(db_handler.get_all_doctor_conversations("123","000"))
