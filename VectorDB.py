@@ -1,14 +1,18 @@
 import chromadb
 from chromadb.utils import embedding_functions
 
-
-class VectorDB:
-    def __init__(self, persist_directory, model_name, collection_name):
-        self.client = chromadb.PersistentClient(path=persist_directory)
-        self.embedding_func = embedding_functions.SentenceTransformerEmbeddingFunction(
-            model_name=model_name
+CHROMA_DATA_PATH = "chroma_data/"
+COLLECTION_NAME = "conversation_collection"
+MODEL_NAME = "all-MiniLM-L6-v2"
+chromadb_client = chromadb.PersistentClient(path=CHROMA_DATA_PATH)
+embedding_functions_client = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name= MODEL_NAME
         )
-        self.get_or_create_collection(collection_name)
+class VectorDB:
+    def __init__(self):
+        self.client = chromadb_client
+        self.embedding_func = embedding_functions_client
+        self.get_or_create_collection(COLLECTION_NAME)
 
     def get_or_create_collection(self, collection_name):
         """

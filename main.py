@@ -17,10 +17,7 @@ voice_parser = VoiceParser()
 chat_gpt = ChatGPTService()
 database = MongoDBHandler("SoundHealthDB")
 validator = Validator()
-CHROMA_DATA_PATH = "chroma_data/"
-COLLECTION_NAME = "conversation_collection"
-model_name = "all-MiniLM-L6-v2"
-vector_db = VectorDB(persist_directory=CHROMA_DATA_PATH, model_name=model_name, collection_name=COLLECTION_NAME)
+vector_db = VectorDB()
 
 @app.post("/insert_new_doctor")
 async def insert_new_doctor(user_key: str = Form(None) ,doctor_id:str =Form(None)):    
@@ -182,7 +179,7 @@ if __name__ == "__main__":
 
     # You can customize the host and port as needed
     host = "127.0.0.1"
-    port = 8000
+    port = 80
 
     uvicorn.run(app, host=host, port=port, debug=True)
     logger.info(f"Server is online at http://{host}:{port}")
