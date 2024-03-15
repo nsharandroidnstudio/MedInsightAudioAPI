@@ -2,35 +2,32 @@ version: '3'
 services:
   # ChromaDB service
   chromadb:
-    image: chromadb/chroma:latest
+    image: chromadb/chroma:latest  # Use the official ChromaDB image
     container_name: chromadb
     ports:
-      - "8001:8000"
+      - "8001:8000"  # ChromaDB uses port 8000 by default
     volumes:
-      - chroma_data:/chroma/.chroma
+      - chroma_data:/chroma/.chroma  # Optional volume for persistent data
 
   # MongoDB service
   mongo:
-    image: mongo:latest
+    image: mongo:latest  # Use the official MongoDB image
     container_name: mongodb
     ports:
-      - "27017:27017"
+      - "27017:27017"  # Default MongoDB port
     volumes:
-      - mongo_data:/data/db
+      - mongo_data:/data/db  # Optional volume for persistent MongoDB data
 
-  # Your FastAPI service
+  # Your FastAPI service (assuming it connects to both databases)
   fastapi:
-           
-    image: medinsgightregistry.azurecr.io/web_med_insight_version1:latest 
+    build: .
     container_name: fastapi_app
     ports:
-      - "80:80"
+      - "8000:8000"  # Adjust port if needed to avoid conflicts
     depends_on:
       - chromadb
-      - mongo
-    environment:
-      MONGO_HOST: mongo  # Use service name for MongoDB connection
+      - mongo  # FastAPI depends on both databases to start
 
 volumes:
-  chroma_data:
-  mongo_data:
+  chroma_data:  # Optional volume for ChromaDB
+  mongo_data:  # Optional volume for MongoDB
