@@ -14,7 +14,7 @@ variables:
   imageRepository: 'web_med_insight_version1'
   containerRegistry: 'medinsgightregistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: 'build-tag-1'
+  tag: 'latest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
