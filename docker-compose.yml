@@ -21,7 +21,7 @@ services:
   # Your FastAPI service
   fastapi:
            
-    image: medinsgightregistry.azurecr.io/web_med_insight_version1
+    image: medinsgightregistry.azurecr.io/web_med_insight_version1:build-tag-1 
     container_name: fastapi_app
     ports:
       - "80:80"
