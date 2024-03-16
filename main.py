@@ -170,9 +170,6 @@ async def get_similar_conversations(user_key: str = Form(None), doctor_id: str =
         return JSONResponse(content={"error": f"An error occurred,please try later.."}, status_code=500)
 
 
-@app.get("/fakeroute")
-async def get_doctor_conversations():
-            return JSONResponse("Fake dummy!!")
 
 
 
@@ -187,7 +184,7 @@ if __name__ == "__main__":
     import uvicorn
 
     # You can customize the host and port as needed
-    host = "127.0.0.1"
+    host = "0.0.0.0"
     port = 80
 
     uvicorn.run(app, host=host, port=port, debug=True)
