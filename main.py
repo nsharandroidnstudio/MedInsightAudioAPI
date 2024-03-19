@@ -40,7 +40,7 @@ async def upload_voice_data(file: UploadFile = Form(None) ,user_key: str = Form(
             return JSONResponse(content={"error": message}, status_code=400) 
         
         if not database.user_exists(user_key, doctor_id):
-            return JSONResponse(content={"error": "the user is not exist"}, status_code=400)
+            return JSONResponse(content={"error": "the user is not exist!"}, status_code=400)
         
         # Save the audio file locally
         try:
