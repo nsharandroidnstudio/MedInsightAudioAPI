@@ -15,7 +15,7 @@ class ChatGPTService:
             messages=[
                 {
                     "role": "user",
-                    "content": f"I am a doctor. Here is conversation between me and my patient: \n{input_transcription}\nWhat alternative tests are recommended to the patient to do? list shortly only 3 tests. Don't write anything else, just the 3 tests. Please also explain in one sentence each of the 3 tests"
+                    "content": f"I am a doctor. Here is conversation between me and my patient: \n{input_transcription}\nWhat alternative tests are recommended to the patient to do? list shortly only 3 tests. Don't write anything else, just the 3 tests. Please also explain in one sentence each of the 3 tests. In addition, the tests should be specific. For example, complete blood count in not a specific test"
                 }
             ],
             model="gpt-3.5-turbo",
@@ -26,11 +26,3 @@ class ChatGPTService:
             if chunk.choices[0].delta.content is not None:
                 result += chunk.choices[0].delta.content
         return result
-
-    def generate_embeddings(self, input_transcription, topic):
-
-        response = client.embeddings.create(
-            input=topic + "\n" + input_transcription,
-            model="text-embedding-ada-002"
-        )
-        return response.data[0].embedding
