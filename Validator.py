@@ -3,10 +3,11 @@ import uuid
 from db_service import MongoDBHandler
 
 
+
 class Validator:    
     
     def check_id(self, id, doctor_or_patient):
-        if id is None:
+        if id is None or id == "":
             return f"a {doctor_or_patient} id is missing"        
         if len(id) != 9:
             return f"the length of {doctor_or_patient} id should be 9"
@@ -16,8 +17,8 @@ class Validator:
     
         
     def check_user_key(self, user_key):
-        if user_key is None:
-            return "an user key is missing"
+        if user_key is None or user_key == "":
+            return "a password is missing"
         error_msg = ""        
         if len(user_key) < 8:
             error_msg = "the password must contain at least 8 characters"    
@@ -70,15 +71,15 @@ class Validator:
 
 
 
-    def check_uploaded_file(self, file):
-        if file is None:
+    def check_uploaded_file(self, file):        
+        if file.size == 0:
             return "an audio file is missing"
         allowed_extensions = ['mp3', 'mp4', 'mpeg', 'mpga', 'm4a', 'wav', 'webm']
         file_extension = file.filename.split('.')[-1].lower()              
         if (file_extension not in allowed_extensions):
             return f"the file type is not supported. The type should be one of the following types: {allowed_extensions}"
         
-        max_size_bytes = 25 * 1024 * 1024  # Convert MB to bytes
+        max_size_bytes = 25 * 1024 * 1024 
         file_data = file.file.read()
         file_size = len(file_data)
         file.file.seek(0)        
@@ -89,7 +90,7 @@ class Validator:
     
 
     def check_conversation_id(self, conversation_id):
-        if conversation_id is None:
+        if conversation_id is None or conversation_id == "":
             return "a conversation id is missing"
         isValid = False
         try:
@@ -107,15 +108,23 @@ class Validator:
 
     
     def check_topic(self, topic):
-        if topic is None:
+        if topic is None or topic == "":
             return "a topic is missing"
-        allowed_topics = ['Asthma', 'COVID-19', 'Alzheimer', 'Headache', 'Back pain', 'Muscle pain', 'Toothache']               
+        allowed_topics = ['Mononucleosis', 'Hepatitis B Virus', 'Diabetes', 'Migraine', 'Coeliac', 'Kidney stones', 'Irritable Bowel Syndrome']               
         if (topic not in allowed_topics):
             return f"the topic is not supported. You should enter one of the following topics: {allowed_topics}"
         else:
             return "valid"
-        
     
+    def check_status(self, status):
+        if status is None or status == "":
+            return "a status is missing"
+        allowed_statuses = ['under review', 'end of inspection', 'for further inspection']               
+        if (status not in allowed_statuses):
+            return f"the status is not supported. You should enter one of the following statuses: {allowed_statuses}"
+        else:
+            return "valid"
+        
 
     def check_upload_voice_data(self, file, user_key, doctor_id, patient_id, topic):
         error_msg = ""
@@ -235,6 +244,66 @@ class Validator:
             return error_msg
         else:      
             return "valid"
+    
+    def check_get_status_conversations(self, user_key, doctor_id, status):
+        error_msg = ""
+
+        message1 = self.check_user_key(user_key)            
+        if (message1 != "valid"):            
+            error_msg = message1   
+            
+        message2 = self.check_id(doctor_id, "doctor")
+        if (message2 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message2
+            else:
+                error_msg = error_msg + "," + message2
+        
+        message3 = self.check_status(status)
+        if (message3 != "valid"):
+            if (error_msg == ""):
+                error_msg = message3
+            else:
+                error_msg = error_msg + "," + message3
+              
+        if (error_msg != ""):                        
+            return error_msg
+        else:      
+            return "valid"
+    
+    def check_update_status(self, user_key, doctor_id, conversation_id, status):
+        error_msg = ""
+
+        message1 = self.check_user_key(user_key)            
+        if (message1 != "valid"):            
+            error_msg = message1   
+            
+        message2 = self.check_id(doctor_id, "doctor")
+        if (message2 != "valid"):            
+            if (error_msg == ""):
+                error_msg = message2
+            else:
+                error_msg = error_msg + "," + message2
+        
+        message3 = self.check_conversation_id(conversation_id)
+        if (message3 != "valid"):
+            if (error_msg == ""):
+                error_msg = message3
+            else:
+                error_msg = error_msg + "," + message3
+        
+        message4 = self.check_status(status)
+        if (message4 != "valid"):
+            if (error_msg == ""):
+                error_msg = message4
+            else:
+                error_msg = error_msg + "," + message4
+              
+        if (error_msg != ""):                        
+            return error_msg
+        else:      
+            return "valid"
+
     
     
 
