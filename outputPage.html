@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="title"></title>
+  <link rel="stylesheet" href="styles.css">                
+</head>
+<body> 
+  <header>
+    <nav>
+        <ul>
+            <li><a href="HomePage.html">Home</a></li>
+            <li><a href="RegisterPage.html">Register</a></li>
+            <li><a href="Upload_conversation.html">Upload Conversation</a></li>
+            <li><a href="Patient_conversations.html">Get Patient Conversations</a></li>
+            <li><a href="Doctor_conversations.html">Get Doctor Conversations</a></li>
+            <li><a href="Topic_conversations.html">Get Topic Conversations</a></li>
+            <li><a href="ID_conversation.html">Get ID Conversation</a></li>
+            <li><a href="Status_conversations.html">Get Status Conversations</a></li>
+            <li><a href="Similar_tests.html">Get Similar Tests</a></li>
+            <li><a href="Update_status.html">Update Status</a></li>
+            <li><a href="Statistics.html">Get Statistics</a></li>
+        </ul>
+    </nav>
+  </header>              
+  <h1 id="topic"></h1>
+  <h3 id="emptymsg"></h3>
+  <p id="data" style="font-size:20px"> 
+  <p id="conversation_id" style="font-size:20px"></p>            
+  </p>
+              
+<script>                  
+  const storedTitle = window.localStorage.getItem('pageTitle');
+  const storedTopic = window.localStorage.getItem('pageTopic');
+  const storedData = window.localStorage.getItem('pageData');     
+  document.getElementById('title').innerText = storedTitle;
+  document.getElementById('topic').innerHTML = storedTopic;
+  if (storedData !== null && storedData !== undefined && storedData !== '')
+  {
+    document.getElementById('data').innerHTML = storedData;    
+  }
+  else
+  {
+    if (storedTitle == "Similar Tests")
+    {
+      document.getElementById('emptymsg').innerHTML = "There is only one conversation so there are no similar tests";
+    }
+    else
+    {
+      document.getElementById('emptymsg').innerHTML = "There are no conversations";
+    }
+  }
+
+</script>
+
+</body>
+</html>
+
+              

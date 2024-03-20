@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload conversation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+        <ul>
+            <li><a href="HomePage.html">Home</a></li>
+            <li><a href="RegisterPage.html">Register</a></li>
+            <li><a href="Upload_conversation.html">Upload Conversation</a></li>
+            <li><a href="Patient_conversations.html">Get Patient Conversations</a></li>
+            <li><a href="Doctor_conversations.html">Get Doctor Conversations</a></li>
+            <li><a href="Topic_conversations.html">Get Topic Conversations</a></li>
+            <li><a href="ID_conversation.html">Get ID Conversation</a></li>
+            <li><a href="Status_conversations.html">Get Status Conversations</a></li>
+            <li><a href="Similar_tests.html">Get Similar Tests</a></li>
+            <li><a href="Update_status.html">Update Status</a></li>
+            <li><a href="Statistics.html">Get Statistics</a></li>
+        </ul>
+    </nav>
+  </header>
+
+<h2>Upload conversation and get additional medical tests</h2>
+
+<form id="uploadForm">
+  <label for="doctor_id">Doctor ID:</label><br>
+  <input type="text" id="doctor_id" name="doctor_id"><br>
+  <label for="user_key">Password:</label><br>
+  <input type="text" id="user_key" name="user_key"><br>
+  <label for="file">File:</label><br>
+  <input type="file" id="file" name="file"><br><br>
+  <label for="patient_id">Patient ID:</label><br>
+  <input type="text" id="patient_id" name="patient_id"><br>
+  <label for="topic">Topic:</label><br>
+  <select name="topic" id="topic">
+    <option value="Mononucleosis">Mononucleosis</option>
+    <option value="Hepatitis B Virus">Hepatitis B Virus</option>
+    <option value="Diabetes">Diabetes</option>
+    <option value="Migraine">Migraine</option>
+    <option value="Coeliac">Coeliac</option>
+    <option value="Kidney stones">Kidney stones</option>
+    <option value="Irritable Bowel Syndrome">Irritable Bowel Syndrome</option>      
+  </select>
+  <br><br>  
+  <input type="submit" value="Upload conversation">
+</form>
+
+<script>
+    document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      try {
+        const response = await fetch("/upload_voice_data", {
+          method: "POST",
+          body: formData
+        });
+        const data = await response.json();               
+        if (response.ok) {
+          let title = "conversation analysis"
+          let topic = "Additional medical tests"
+          let tests = `<p style="font-size:20px">${data.Additional_medical_tests.replace(/\. +(\d+)/g, '.<br>$1')}</p><p style="font-size:20px">Conversation ID: ${data.conversation_id}</p>`
+          window.localStorage.setItem('pageTitle', title);  
+          window.localStorage.setItem('pageTopic', topic);  
+          window.localStorage.setItem('pageData', tests);               
+          window.location.href = "outputPage.html"
+        } else {
+          alert(data.error);          
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
+      }
+    });
+</script>
+    
+</body>
+</html>

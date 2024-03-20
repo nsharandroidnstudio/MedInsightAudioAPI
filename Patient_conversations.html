@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Conversations</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+        <ul>
+            <li><a href="HomePage.html">Home</a></li>
+            <li><a href="RegisterPage.html">Register</a></li>
+            <li><a href="Upload_conversation.html">Upload Conversation</a></li>
+            <li><a href="Patient_conversations.html">Get Patient Conversations</a></li>
+            <li><a href="Doctor_conversations.html">Get Doctor Conversations</a></li>
+            <li><a href="Topic_conversations.html">Get Topic Conversations</a></li>
+            <li><a href="ID_conversation.html">Get ID Conversation</a></li>
+            <li><a href="Status_conversations.html">Get Status Conversations</a></li>
+            <li><a href="Similar_tests.html">Get Similar Tests</a></li>
+            <li><a href="Update_status.html">Update Status</a></li>
+            <li><a href="Statistics.html">Get Statistics</a></li>
+        </ul>
+    </nav>
+  </header>
+
+<h2>Patient Conversations</h2>
+
+<form id="patientForm">
+  <label for="doctor_id">Doctor ID:</label><br>
+  <input type="text" id="doctor_id" name="doctor_id"><br>
+  <label for="user_key">Password:</label><br>
+  <input type="text" id="user_key" name="user_key"><br>  
+  <label for="patient_id">Patient ID:</label><br>
+  <input type="text" id="patient_id" name="patient_id"><br><br>  
+  <input type="submit" value="Get Patient Conversations">
+</form>
+
+<script>
+    document.getElementById("patientForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const doctorId = formData.get("doctor_id");
+    const userKey = formData.get("user_key");
+    const patientId = formData.get("patient_id");
+    try {
+        const queryParams = new URLSearchParams({
+            doctor_id: doctorId,
+            user_key: userKey,
+            patient_id: patientId
+        });
+        const response = await fetch("/get_patient_conversations?" + queryParams.toString(), {
+            method: "GET"
+        });
+        const data = await response.json();                      
+        if (response.ok) {
+              let title = "Patient Conversations"
+              let topic = "Patient Conversations"             
+              window.localStorage.setItem('pageTitle', title);  
+              window.localStorage.setItem('pageTopic', topic);
+              if (Array.isArray(data.conversations) && data.conversations.length === 0) {
+                window.localStorage.setItem('pageData', "");
+              }
+              else {
+                let conversationListHTML = "<ol style='font-size: 20px;'>";
+                data.conversations.forEach(conversation => {
+                let conversationHTML = "<ul>";
+                for (const [key, value] of Object.entries(conversation)) {
+                conversationHTML += `<li><strong>${key}:</strong> ${value}</li>`;
+                }
+                conversationHTML += "</ul>";
+                conversationListHTML += `<li>${conversationHTML}</li><br>`;
+                });
+                conversationListHTML += "</ol>";
+
+                window.localStorage.setItem('pageData', conversationListHTML);
+              }                
+                                
+              window.location.href = "outputPage.html"                 
+        } else {
+          alert(data.error);          
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
+      }
+    });
+</script>
+    
+</body>
+</html>

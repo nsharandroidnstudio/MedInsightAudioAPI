@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Pie Charts</title>    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="HomePage.html">Home</a></li>
+                <li><a href="RegisterPage.html">Register</a></li>
+                <li><a href="Upload_conversation.html">Upload Conversation</a></li>
+                <li><a href="Patient_conversations.html">Get Patient Conversations</a></li>
+                <li><a href="Doctor_conversations.html">Get Doctor Conversations</a></li>
+                <li><a href="Topic_conversations.html">Get Topic Conversations</a></li>
+                <li><a href="ID_conversation.html">Get ID Conversation</a></li>
+                <li><a href="Status_conversations.html">Get Status Conversations</a></li>
+                <li><a href="Similar_tests.html">Get Similar Tests</a></li>
+                <li><a href="Update_status.html">Update Status</a></li>
+                <li><a href="Statistics.html">Get Statistics</a></li>
+            </ul>
+        </nav>
+      </header>
+    <div>
+        <h2 style="text-align: center;">% of each topic from all the conversations</h2>
+        <div id="chartContainer1">
+            <canvas id="pieChart1" width="400" height="400"></canvas>
+        </div>
+        <h2 style="text-align: center;">% of each status from all the conversations</h2>
+        <div id="chartContainer2">
+            <canvas id="pieChart2" width="400" height="400"></canvas>
+        </div>
+        <h2 style="text-align: center;">% of each topic from all the conversations which are in status under review</h2>
+        <div id="chartContainer3">
+            <canvas id="pieChart3" width="400" height="400"></canvas>
+        </div>
+        <h2 style="text-align: center;">% of each topic from all the conversations which are in status end of inspection</h2>
+        <div id="chartContainer4">
+            <canvas id="pieChart4" width="400" height="400"></canvas>
+        </div>
+        <h2 style="text-align: center;">% of each topic from all the conversations which are in status for further inspection</h2>
+        <div id="chartContainer5">
+            <canvas id="pieChart5" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {            
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const dictionary1 = {};
+            const dictionary2 = {};
+            const dictionary3 = {};
+            const dictionary4 = {};
+            const dictionary5 = {};
+            let counter = 1
+
+            for (const pair of urlParams.entries()) {  
+                const [key, value] = pair;
+                if (counter <= 7)
+                {
+                    dictionary1[key] = value;
+                }
+                else if (counter >= 8 && counter <= 10)
+                {
+                    dictionary2[key] = value;
+                }
+                else if (counter >= 11 && counter <= 17)
+                {
+                    dictionary3[key] = value;
+                }
+                else if (counter >= 18 && counter <= 24)
+                {
+                    dictionary4[key] = value;
+                }
+                else if (counter >= 25 && counter <= 31)
+                {
+                    dictionary5[key] = value;
+                }
+
+                counter++;
+                
+            }            
+
+            function createPieChart(canvasId, data, chart_container) {                
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                const labels = Object.keys(data);
+                const percentages = Object.values(data);
+
+                const allZero = percentages.every(percentage => percentage === "0%");
+
+                if (allZero) {    
+                    const chartContainer = document.getElementById(chart_container);
+                    chartContainer.innerHTML = "<h3 style='text-align: center;'>There are no conversations</h3>";
+                }
+
+                else
+                {
+
+                    return new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                        data: percentages.map(percentage => parseFloat(percentage.replace('%', ''))),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)',
+                            'rgba(231, 233, 237, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(231, 233, 237, 1)'
+                        ],
+                        borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        aspectRatio: 3,
+                        legend: {
+                        position: 'bottom',
+                        }
+                    }
+                    });
+                }
+            }
+       
+            const pieChart1 = createPieChart('pieChart1', dictionary1, "chartContainer1");           
+            const pieChart2 = createPieChart('pieChart2', dictionary2, "chartContainer2");
+            const pieChart3 = createPieChart('pieChart3', dictionary3, "chartContainer3");
+            const pieChart4 = createPieChart('pieChart4', dictionary4, "chartContainer4");
+            const pieChart5 = createPieChart('pieChart5', dictionary5, "chartContainer5");
+            
+        }); 
+              
+    </script>
+</body>
+</html>

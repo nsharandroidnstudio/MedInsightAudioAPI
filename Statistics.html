@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Statistics</title>
+</head>
+<body>
+  <header>
+    <nav>
+        <ul>
+            <li><a href="HomePage.html">Home</a></li>
+            <li><a href="RegisterPage.html">Register</a></li>
+            <li><a href="Upload_conversation.html">Upload Conversation</a></li>
+            <li><a href="Patient_conversations.html">Get Patient Conversations</a></li>
+            <li><a href="Doctor_conversations.html">Get Doctor Conversations</a></li>
+            <li><a href="Topic_conversations.html">Get Topic Conversations</a></li>
+            <li><a href="ID_conversation.html">Get ID Conversation</a></li>
+            <li><a href="Status_conversations.html">Get Status Conversations</a></li>
+            <li><a href="Similar_tests.html">Get Similar Tests</a></li>
+            <li><a href="Update_status.html">Update Status</a></li>
+            <li><a href="Statistics.html">Get Statistics</a></li>
+        </ul>
+    </nav>
+  </header>
+
+<h2>Statistics</h2>
+
+<form id="statisticsForm">
+  <label for="doctor_id">Doctor ID:</label><br>
+  <input type="text" id="doctor_id" name="doctor_id"><br>
+  <label for="user_key">Password:</label><br>
+  <input type="text" id="user_key" name="user_key"><br><br>    
+  <input type="submit" value="Get Statistics">
+</form>
+
+<script>
+    document.getElementById("statisticsForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const doctorId = formData.get("doctor_id");
+    const userKey = formData.get("user_key");    
+    try {
+        const queryParams = new URLSearchParams({
+            doctor_id: doctorId,
+            user_key: userKey            
+        });
+        const response = await fetch("/get_statistics?" + queryParams.toString(), {
+            method: "GET"
+        });
+        const data = await response.json();               
+        if (response.ok) {
+          const queryString = new URLSearchParams(data).toString();
+          window.location.href = `Pie_charts.html?${queryString}`;          
+        } else {
+          alert(data.error);          
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
+      }
+    });
+</script>
+    
+</body>
+</html>
