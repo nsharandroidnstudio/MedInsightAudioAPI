@@ -42,7 +42,7 @@ async def get_output_page():
     with open("outputPage.html", "r") as file:
         html_content = file.read()
     return HTMLResponse(content=html_content, status_code=200)
-
+"""
 @app.get("/styles.css")
 def get_css():
     return FileResponse("styles.css")
@@ -50,7 +50,7 @@ def get_css():
 @app.get("/doctor.png")
 def get_doctor_image():
     return FileResponse("doctor.png")
-
+"""
 @app.get("/RegisterPage.html", response_class=HTMLResponse)
 async def get_register_page():
     with open("RegisterPage.html", "r") as file:
