@@ -36,7 +36,7 @@ async def get_home_page():
     with open("HomePage.html", "r") as file:
         html_content = file.read()
     return HTMLResponse(content=html_content, status_code=200)
-
+"""
 @app.get("/outputPage.html", response_class=HTMLResponse)
 async def get_output_page():
     with open("outputPage.html", "r") as file:
@@ -116,7 +116,7 @@ async def get_topic_statistics_page():
     with open("Pie_charts.html", "r") as file:
         html_content = file.read()
     return HTMLResponse(content=html_content, status_code=200)
-
+"""
 @app.post("/insert_new_doctor")
 async def insert_new_doctor(user_key: str = Form(None) ,doctor_id:str =Form(None)):  
     message = validator.check_user_key_and_doctor_id(doctor_id, user_key)

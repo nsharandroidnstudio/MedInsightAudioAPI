@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedInsightAPI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a id="home-link" href="HomePage.html">Home</a></li>
+                <li><a id="register-link" href="RegisterPage.html">Register</a></li>
+                <li><a id="upload-link" href="Upload_conversation.html">Upload Conversation</a></li>
+                <li><a id="patient-link" href="Patient_conversations.html">Get Patient Conversations</a></li>
+                <li><a id="doctor-link" href="Doctor_conversations.html">Get Doctor Conversations</a></li>
+                <li><a id="topic-link" href="Topic_conversations.html">Get Topic Conversations</a></li>
+                <li><a id="id-link" href="ID_conversation.html">Get ID Conversation</a></li>
+                <li><a id="status-link" href="Status_conversations.html">Get Status Conversations</a></li>
+                <li><a id="similar-link" href="Similar_tests.html">Get Similar Tests</a></li>
+                <li><a id="update-link" href="Update_status.html">Update Status</a></li>
+                <li><a id="statistics-link" href="Statistics.html">Get Statistics</a></li>
+            </ul>
+            
+        </nav>
+    </header>
+    <main>
+        <h1>Welcome to MedInsightAPI</h1>
+        <p>We all know that medicine is not a pure science, not only does it not have solutions for all diseases, but in many cases it does not have certain answers to the exact situation the patient is in, and it also does not have certain answers about the results of the treatment in any given situation.</p>
+        <p>Our API tries to find another factor that can give another perspective on medical tests that the patient needs and thus help the doctor in determining the correct diagnosis of the disease and the methods of treating it.</p>
+        <p>Our API supports the following methods:
+        <ol>
+            <li><strong>Register</strong> - a doctor who wants to use the API needs to register with an ID and a password.</li>
+            <li><strong>Upload Conversation</strong> - the central part in the API. The doctor enters his ID and password, a patient ID, an audio file of the conversation between the doctor and the patient, and the topic of the conversation which is the diagnosis which the doctor thinks the patient has. The doctor gets as output additional medical tests that he did not mention in the conversation that can help him in determining the correct diagnosis of the disease, and a conversation id which is unique to every conversation.</li>
+            <li><strong>Get Patient Conversations</strong> - the doctor enters his ID, password and a patient ID and gets as output all the information on all the conversations of the patient.</li>
+            <li><strong>Get Doctor Conversations</strong> - the doctor enters his ID and password and gets as output all the information on all his conversations.</li>
+            <li><strong>Get Topic Conversations</strong> - the doctor enters his ID, password and a topic and gets as output all the information on all the conversations in this topic.</li>
+            <li><strong>Get ID Conversation</strong> - the doctor enters his ID, password and a conversation ID and gets as output all the information on the conversation with this ID.</li>
+            <li><strong>Get Status Conversations</strong> - the doctor enters his ID, password and a status and gets as output all the information on all the conversations with this status.</li>
+            <li><strong>Get Similar Tests</strong> - the doctor enters his ID, password and a conversation ID and gets as output several similar tests from other conversations, their topics, their IDs and how much they are similar to the input conversation (conversation distances). The smaller the distance, the more similar they are.</li>
+            <li><strong>Update Status</strong> - a doctor can to update a status of a conversation by enter his ID, password, the ID of the conversation which he wants to update its status, and the new status of this conversation.</li>
+            <li><strong>Get Statistics</strong> - the doctor enters his ID and his password and gets as output several pie charts that each one of them describes the following information: % of each topic from all the conversations, % of each status from all the conversations, % of each topic from all the conversations which are in status under review, % of each topic from all the conversations which are in status end of inspection, % of each topic from all the conversations which are in status for further inspection.</li>
+          </ol> 
+        </p>
+        <p><img src="doctor.png" alt="doctor"/></p>
+    </main>
+</body>
+</html>
