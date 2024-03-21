@@ -119,7 +119,7 @@ class Validator:
     def check_status(self, status):
         if status is None or status == "":
             return "a status is missing"
-        allowed_statuses = ['under review', 'end of inspection', 'for further inspection']               
+        allowed_statuses = ['under review', 'completed']               
         if (status not in allowed_statuses):
             return f"the status is not supported. You should enter one of the following statuses: {allowed_statuses}"
         else:

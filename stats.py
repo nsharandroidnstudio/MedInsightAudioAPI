@@ -20,7 +20,7 @@ class stats:
     def get_status_statistics(self):
         dictionary = {}
         all_conversations = database.get_db_size()        
-        statuses = ['under review', 'end of inspection', 'for further inspection']
+        statuses = ['under review', 'completed']
         for status in statuses:
             _, status_num = database.get_conversations_by_element(status, "status")  
             if (all_conversations != 0):      
@@ -33,7 +33,7 @@ class stats:
     
     def get_topic_from_status_statistics(self):
         dictionary = {}        
-        statuses = ['under review', 'end of inspection', 'for further inspection']
+        statuses = ['under review', 'completed']
         topics = ['Mononucleosis', 'Hepatitis B Virus', 'Diabetes', 'Migraine', 'Coeliac', 'Kidney stones', 'Irritable Bowel Syndrome']        
         for status in statuses:
             status_list, status_num = database.get_conversations_by_element(status, "status") 

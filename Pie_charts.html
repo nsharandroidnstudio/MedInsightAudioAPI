@@ -38,14 +38,10 @@
         <div id="chartContainer3">
             <canvas id="pieChart3" width="400" height="400"></canvas>
         </div>
-        <h2 style="text-align: center;">% of each topic from all the conversations which are in status end of inspection</h2>
+        <h2 style="text-align: center;">% of each topic from all the conversations which are in status completed</h2>
         <div id="chartContainer4">
             <canvas id="pieChart4" width="400" height="400"></canvas>
-        </div>
-        <h2 style="text-align: center;">% of each topic from all the conversations which are in status for further inspection</h2>
-        <div id="chartContainer5">
-            <canvas id="pieChart5" width="400" height="400"></canvas>
-        </div>
+        </div>        
     </div>
 
     <script>
@@ -55,8 +51,7 @@
             const dictionary1 = {};
             const dictionary2 = {};
             const dictionary3 = {};
-            const dictionary4 = {};
-            const dictionary5 = {};
+            const dictionary4 = {};           
             let counter = 1
 
             for (const pair of urlParams.entries()) {  
@@ -65,22 +60,18 @@
                 {
                     dictionary1[key] = value;
                 }
-                else if (counter >= 8 && counter <= 10)
+                else if (counter >= 8 && counter <= 9)
                 {
                     dictionary2[key] = value;
                 }
-                else if (counter >= 11 && counter <= 17)
+                else if (counter >= 10 && counter <= 16)
                 {
                     dictionary3[key] = value;
                 }
-                else if (counter >= 18 && counter <= 24)
+                else if (counter >= 17 && counter <= 23)
                 {
                     dictionary4[key] = value;
-                }
-                else if (counter >= 25 && counter <= 31)
-                {
-                    dictionary5[key] = value;
-                }
+                }                
 
                 counter++;
                 
@@ -142,8 +133,7 @@
             const pieChart1 = createPieChart('pieChart1', dictionary1, "chartContainer1");           
             const pieChart2 = createPieChart('pieChart2', dictionary2, "chartContainer2");
             const pieChart3 = createPieChart('pieChart3', dictionary3, "chartContainer3");
-            const pieChart4 = createPieChart('pieChart4', dictionary4, "chartContainer4");
-            const pieChart5 = createPieChart('pieChart5', dictionary5, "chartContainer5");
+            const pieChart4 = createPieChart('pieChart4', dictionary4, "chartContainer4");            
             
         }); 
               
