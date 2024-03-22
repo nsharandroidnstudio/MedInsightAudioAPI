@@ -1,85 +1,5 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 0;
-}
-
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: center;        
-    font-size: 15px;
-}
-
-nav ul li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;    
-}
-
-
-
-h1, h2, h3 {    
-    font-family: 'Segoe UI'; 
-    color: #333; 
-    text-align: center; 
-    
-}
-
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
-    height: 200px;
-}
-
-input[type=text], select {
-	width: 100%;
-	padding: 7px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box;
-	margin-top: 6px;
-	margin-bottom: 16px;
-	resize: vertical;
-}
-
-input[type=submit] {
-	background-color: #4cacaf;
-    padding: 12px 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-input[type=submit]:hover {
-    background-color: #4598a0;
-}
-
-form {
-    width: 10%;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 10px;
-    margin: 10px auto;
-}
-
-
-
-body {
-    font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
     margin: 0;
@@ -88,22 +8,29 @@ body {
 header {
     background-color: #007bff;
     color: #fff;
-    padding: 20px;
+    padding: 10px 0;
     text-align: center;
 }
 nav ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    text-align: center;
 }
 nav ul li {
-    display: inline;
-    margin-right: 20px;
+    display: inline-block;
+    margin-right: 60px;    
 }
 nav ul li a {
     color: #fff;
     text-decoration: none;
     font-weight: bold;
+}
+h1, h2, h3 {    
+    font-family: 'Segoe UI'; 
+    color: #333; 
+    text-align: center; 
+    
 }
 nav ul li a:hover {
     color: rgb(8, 8, 8);
@@ -119,12 +46,13 @@ form {
     border-radius: 5px;
     background-color: #bcc5c6;
     padding: 20px;
+    height: 5%;
     margin: 20px auto;
 }
 label {
     font-weight: bold;
 }
-input[type=text] {
+input[type=text], select {
     width: 100%;
     padding: 7px;
     border: 1px solid #ccc;
@@ -144,21 +72,13 @@ input[type=submit] {
 input[type=submit]:hover {
     background-color: #4598a0;
 }
-nav ul li {
-display: inline;
-margin-right: 60px; /* Adjusted margin */
-}
 
-.rounded-image {
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-form {
-    width: 20%; /* Adjusted width */
-    border-radius: 5px;
-    background-color: #bcc5c6;
-    padding: 20px;
-    height: 5%;
-    margin: 20px auto;
 }
